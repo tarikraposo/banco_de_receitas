@@ -1,1 +1,74 @@
-<p>receita-form works!</p>
+<form>
+
+  <!-- Nome -->
+  <mat-form-field appearance="outline">
+    <mat-label>Nome</mat-label>
+    <input
+      matInput
+      [value]="receitaModel().nome"
+      (input)="receitaModel.update(m => ({ ...m, nome: $any($event.target).value }))"
+    />
+  </mat-form-field>
+
+  <!-- Ingredientes -->
+  <div class="ingredientes-container">
+
+    <h3>Ingredientes</h3>
+
+    @for (ingrediente of receitaModel().ingredientes; track $index) {
+
+      <div class="ingrediente-item">
+
+        <mat-form-field appearance="outline">
+          <mat-label>Ingrediente</mat-label>
+          <input
+            matInput
+            [value]="ingrediente.ingredienteId"
+            (input)="atualizarIngrediente($index, 'ingredienteId', $any($event.target).value)"
+          />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Quantidade</mat-label>
+          <input
+            matInput
+            type="number"
+            [value]="ingrediente.quantidade"
+            (input)="atualizarIngrediente($index, 'quantidade', +$any($event.target).value)"
+          />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Unidade</mat-label>
+          <input
+            matInput
+            [value]="ingrediente.unidade"
+            (input)="atualizarIngrediente($index, 'unidade', $any($event.target).value)"
+          />
+        </mat-form-field>
+
+        <button
+          mat-icon-button
+          color="warn"
+          type="button"
+          (click)="removerIngrediente($index)"
+        >
+          ✕
+        </button>
+
+      </div>
+
+    }
+
+    <button
+      mat-raised-button
+      color="primary"
+      type="button"
+      (click)="adicionarIngrediente()"
+    >
+      Adicionar ingrediente
+    </button>
+
+  </div>
+
+</form>

@@ -5,7 +5,6 @@
     <input
       matInput
       [value]="receitaModel().nome"
-      (input)="receitaModel.update(m => ({ ...m, nome: $any($event.target).value }))"
     />
   </mat-form-field>
 

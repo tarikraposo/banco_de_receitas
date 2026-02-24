@@ -5,11 +5,11 @@ export interface ReceitaInterface {
   porcoes: number;
   tipoId: string;
   dificuldadeId: string;
-  ingredientes: [
-    {
-      ingredienteId: string;
-      quantidade: number;
-      unidade: string;
-    },
-  ];
+  ingredientes: IngredienteForm[];
+}
+
+export interface IngredienteForm {
+  ingredienteId: string;
+  quantidade: number;
+  unidade: string;
 }

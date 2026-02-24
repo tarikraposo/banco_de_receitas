@@ -1,5 +1,4 @@
 <form>
-
   <!-- Nome -->
   <mat-form-field appearance="outline">
     <mat-label>Nome</mat-label>
@@ -12,13 +11,10 @@
 
   <!-- Ingredientes -->
   <div class="ingredientes-container">
-
     <h3>Ingredientes</h3>
 
     @for (ingrediente of receitaModel().ingredientes; track $index) {
-
       <div class="ingrediente-item">
-
         <mat-form-field appearance="outline">
           <mat-label>Ingrediente</mat-label>
           <input
@@ -47,28 +43,12 @@
           />
         </mat-form-field>
 
-        <button
-          mat-icon-button
-          color="warn"
-          type="button"
-          (click)="removerIngrediente($index)"
-        >
+        <button mat-icon-button color="warn" type="button" (click)="removerIngrediente($index)">
           ✕
         </button>
-
       </div>
-
     }
 
-    <button
-      mat-raised-button
-      color="primary"
-      type="button"
-      (click)="adicionarIngrediente()"
-    >
-      Adicionar ingrediente
-    </button>
-
+    <button mat-raised-button color="primary" type="button">Adicionar ingrediente</button>
   </div>
-
 </form>

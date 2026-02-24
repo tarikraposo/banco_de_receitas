@@ -1,12 +1,12 @@
 import { Component, signal } from '@angular/core';
 import { IngredienteForm, ReceitaInterface } from '../../../../core/models/receita-interface';
 import { form } from '@angular/forms/signals';
-import { FormsModule } from '@angular/forms';
-
+import {MatFormFieldModule} from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-receita-form',
-  imports: [FormsModule ],
+  imports: [MatFormFieldModule, MatInputModule],
   templateUrl: './receita-form.html',
   styleUrl: './receita-form.scss',
 })

@@ -1,4 +1,4 @@
-<form (ngSubmit)="enviarFormulario()" class="receita-form">
+<form (ngSubmit)="salvarReceita()" class="receita-form">
   <div class="form-header">
     <h2>Cadastrar Nova Receita</h2>
   </div>
@@ -26,6 +26,17 @@
           (input)="atualizarCampo('descricao', $any($event.target).value)"
           placeholder="Descreva sua receita"
         />
+      </mat-form-field>
+
+      <!-- Modo de preparo -->
+      <mat-form-field appearance="outline" class="form-field-50">
+        <mat-label>Modo de Preparo</mat-label>
+        <textarea
+          matInput
+          [value]="receitaModel().modo_preparo"
+          (input)="atualizarCampo('modo_preparo', $any($event.target).value)"
+          required
+        ></textarea>
       </mat-form-field>
 
       <!-- Tempo de Preparo -->
@@ -194,7 +205,7 @@
 
   <!-- Botões de Ação -->
   <div class="form-actions">
-    <button mat-raised-button color="primary" type="submit">
+    <button mat-raised-button color="primary" type="button">
       <mat-icon>save</mat-icon>
       Salvar Receita
     </button>

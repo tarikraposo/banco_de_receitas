@@ -4,10 +4,12 @@ import { form } from '@angular/forms/signals';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { ReceitasService } from '../../services/receitas.service';
+import { MatSelectModule } from '@angular/material/select';
+import { SupabaseClientService } from '../../../../core/supabase.client';
 
 @Component({
   selector: 'app-receita-form',
-  imports: [MatFormFieldModule, MatInputModule],
+  imports: [MatFormFieldModule, MatInputModule, MatSelectModule],
   templateUrl: './receita-form.html',
   styleUrl: './receita-form.scss',
 })
@@ -22,16 +24,17 @@ export class ReceitaForm implements OnInit {
     ingredientes: [],
   });
   receitaService = inject(ReceitasService);
-receitaForm = form(this.receitaModel);
+  ingredientesDisponiveis = this.receitaService.ingredientesDisponiveis;
+  receitaForm = form(this.receitaModel);
 
-constructor() {
-  effect(() => {
-    console.log('Model atualizado:', this.receitaModel());
-  });
-}
+  constructor() {
+    effect(() => {
+      console.log('Model atualizado:', this.receitaModel());
+    });
+  }
 
-ngOnInit(): void {
-    this.receitaService.testarConexao();
+  ngOnInit(): void {
+    this.receitaService.carregarIngredientes();
   }
 
   atualizarIngrediente(index: number, campo: keyof IngredienteForm, valor: any) {

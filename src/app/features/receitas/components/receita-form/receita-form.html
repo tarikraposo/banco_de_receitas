@@ -2,10 +2,7 @@
   <!-- Nome -->
   <mat-form-field appearance="outline">
     <mat-label>Nome</mat-label>
-    <input
-      matInput
-      [value]="receitaModel().nome"
-    />
+    <input matInput [value]="receitaModel().nome" />
   </mat-form-field>
 
   <!-- Ingredientes -->
@@ -16,11 +13,17 @@
       <div class="ingrediente-item">
         <mat-form-field appearance="outline">
           <mat-label>Ingrediente</mat-label>
-          <input
-            matInput
+
+          <mat-select
             [value]="ingrediente.ingredienteId"
-            (input)="atualizarIngrediente($index, 'ingredienteId', $any($event.target).value)"
-          />
+            (selectionChange)="atualizarIngrediente($index, 'ingredienteId', $event.value)"
+          >
+            @for (item of ingredientesDisponiveis(); track item.id) {
+              <mat-option [value]="item.id">
+                {{ item.nome }}
+              </mat-option>
+            }
+          </mat-select>
         </mat-form-field>
 
         <mat-form-field appearance="outline">

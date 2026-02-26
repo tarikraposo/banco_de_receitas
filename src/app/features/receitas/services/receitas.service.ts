@@ -28,6 +28,5 @@ export class ReceitasService {
     }
 
     this.ingredientesDisponiveis.set(data ?? []);
-    console.log(data)
   }
 }

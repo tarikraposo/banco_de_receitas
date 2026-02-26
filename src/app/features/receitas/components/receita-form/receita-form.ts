@@ -1,8 +1,9 @@
-import { Component, signal } from '@angular/core';
+import { Component, effect, inject, OnInit, signal } from '@angular/core';
 import { IngredienteForm, ReceitaInterface } from '../../../../core/models/receita-interface';
 import { form } from '@angular/forms/signals';
-import {MatFormFieldModule} from '@angular/material/form-field';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { ReceitasService } from '../../services/receitas.service';
 
 @Component({
   selector: 'app-receita-form',
@@ -10,7 +11,7 @@ import { MatInputModule } from '@angular/material/input';
   templateUrl: './receita-form.html',
   styleUrl: './receita-form.scss',
 })
-export class ReceitaForm {
+export class ReceitaForm implements OnInit {
   receitaModel = signal<ReceitaInterface>({
     nome: '',
     descricao: '',
@@ -20,8 +21,18 @@ export class ReceitaForm {
     dificuldadeId: '',
     ingredientes: [],
   });
+  receitaService = inject(ReceitasService);
+receitaForm = form(this.receitaModel);
 
-  receitaForm = form(this.receitaModel);
+constructor() {
+  effect(() => {
+    console.log('Model atualizado:', this.receitaModel());
+  });
+}
+
+ngOnInit(): void {
+    this.receitaService.testarConexao();
+  }
 
   atualizarIngrediente(index: number, campo: keyof IngredienteForm, valor: any) {
     this.receitaModel.update((model) => {

@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { SupabaseClientService } from '../../../core/supabase.client';
 
 @Injectable({
@@ -6,6 +6,7 @@ import { SupabaseClientService } from '../../../core/supabase.client';
 })
 export class ReceitasService {
   private supabaseService = inject(SupabaseClientService);
+  ingredientesDisponiveis = signal<{ id: string; nome: string }[]>([]);
 
   async listar() {
     const { data, error } = await this.supabaseService.client.from('receitas').select('*');
@@ -14,17 +15,19 @@ export class ReceitasService {
 
     return data;
   }
-  async testarConexao() {
+  
+  async carregarIngredientes() {
     const { data, error } = await this.supabaseService.client
       .from('ingredientes')
-      .select('*')
-      .limit(5);
+      .select('id, nome')
+      .order('nome');
 
     if (error) {
-      console.error('Erro Supabase:', error);
+      console.error('Erro ao carregar ingredientes', error);
       return;
     }
 
-    console.log('Ingredientes:', data);
+    this.ingredientesDisponiveis.set(data ?? []);
+    console.log(data)
   }
 }

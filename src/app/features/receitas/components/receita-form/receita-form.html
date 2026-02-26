@@ -1,53 +1,206 @@
-<form>
-  <!-- Nome -->
-  <mat-form-field appearance="outline">
-    <mat-label>Nome</mat-label>
-    <input
-      matInput
-      [value]="receitaModel().nome"
-    />
-  </mat-form-field>
+<form (ngSubmit)="enviarFormulario()" class="receita-form">
+  <div class="form-header">
+    <h2>Cadastrar Nova Receita</h2>
+  </div>
+
+  <div class="form-section">
+    <h3>Informações Básicas</h3>
+    <div class="form-content">
+      <!-- Nome -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Nome da Receita</mat-label>
+        <input
+          matInput
+          [value]="receitaModel().nome"
+          (input)="atualizarCampo('nome', $any($event.target).value)"
+          required
+        />
+      </mat-form-field>
+
+      <!-- Descrição -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Descrição</mat-label>
+        <input
+          matInput
+          [value]="receitaModel().descricao"
+          (input)="atualizarCampo('descricao', $any($event.target).value)"
+          placeholder="Descreva sua receita"
+        />
+      </mat-form-field>
+
+      <!-- Tempo de Preparo -->
+      <mat-form-field appearance="outline" class="form-field-50">
+        <mat-label>Tempo de Preparo (minutos)</mat-label>
+        <input
+          matInput
+          type="number"
+          [value]="receitaModel().tempoPreparo"
+          (input)="atualizarCampo('tempoPreparo', +$any($event.target).value)"
+          min="1"
+          required
+        />
+      </mat-form-field>
+
+      <!-- Porções -->
+      <mat-form-field appearance="outline" class="form-field-50">
+        <mat-label>Porções</mat-label>
+        <input
+          matInput
+          type="number"
+          [value]="receitaModel().porcoes"
+          (input)="atualizarCampo('porcoes', +$any($event.target).value)"
+          min="1"
+          required
+        />
+      </mat-form-field>
+
+      <!-- Imagem URL -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>URL da Imagem</mat-label>
+        <input
+          matInput
+          [value]="receitaModel().imagem_url || ''"
+          (input)="atualizarCampo('imagem_url', $any($event.target).value)"
+          placeholder="https://exemplo.com/imagem.jpg"
+        />
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="form-section">
+    <h3>Categorização</h3>
+    <div class="form-content">
+      <!-- Tipo de Receita -->
+      <mat-form-field appearance="outline" class="form-field-50">
+        <mat-label>Tipo de Receita</mat-label>
+        <mat-select
+          [value]="receitaModel().tipoId"
+          (selectionChange)="atualizarCampo('tipoId', $event.value)"
+          required
+        >
+          <mat-option value="">
+            <span>Selecione um tipo</span>
+          </mat-option>
+          @for (tipo of tiposReceita(); track tipo.id) {
+            <mat-option [value]="tipo.id">
+              {{ tipo.nome }}
+            </mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Dificuldade -->
+      <mat-form-field appearance="outline" class="form-field-50">
+        <mat-label>Dificuldade</mat-label>
+        <mat-select
+          [value]="receitaModel().dificuldadeId"
+          (selectionChange)="atualizarCampo('dificuldadeId', $event.value)"
+          required
+        >
+          <mat-option value="">
+            <span>Selecione um nível</span>
+          </mat-option>
+          @for (dif of dificuldades(); track dif.id) {
+            <mat-option [value]="dif.id">
+              {{ dif.nome }}
+            </mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
 
   <!-- Ingredientes -->
-  <div class="ingredientes-container">
+  <div class="form-section">
     <h3>Ingredientes</h3>
+    <div class="form-content ingredientes-flex">
+      @if (receitaModel().ingredientes.length === 0) {
+        <p class="no-ingredients">Nenhum ingrediente adicionado ainda</p>
+      }
 
-    @for (ingrediente of receitaModel().ingredientes; track $index) {
-      <div class="ingrediente-item">
-        <mat-form-field appearance="outline">
-          <mat-label>Ingrediente</mat-label>
-          <input
-            matInput
-            [value]="ingrediente.ingredienteId"
-            (input)="atualizarIngrediente($index, 'ingredienteId', $any($event.target).value)"
-          />
-        </mat-form-field>
+      @for (ingrediente of receitaModel().ingredientes; track $index) {
+        <div class="ingrediente-item">
+          <mat-form-field appearance="outline" class="ingrediente-select">
+            <mat-label>Ingrediente</mat-label>
+            <mat-select
+              [value]="ingrediente.ingredienteId"
+              (selectionChange)="atualizarIngrediente($index, 'ingredienteId', $event.value)"
+              required
+            >
+              <mat-option value="">
+                <span>Selecione um ingrediente</span>
+              </mat-option>
+              @for (item of ingredientesDisponiveis(); track item.id) {
+                <mat-option [value]="item.id">
+                  {{ item.nome }}
+                </mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
 
-        <mat-form-field appearance="outline">
-          <mat-label>Quantidade</mat-label>
-          <input
-            matInput
-            type="number"
-            [value]="ingrediente.quantidade"
-            (input)="atualizarIngrediente($index, 'quantidade', +$any($event.target).value)"
-          />
-        </mat-form-field>
+          <mat-form-field appearance="outline" class="ingrediente-quantidade">
+            <mat-label>Quantidade</mat-label>
+            <input
+              matInput
+              type="number"
+              [value]="ingrediente.quantidade"
+              (input)="atualizarIngrediente($index, 'quantidade', +$any($event.target).value)"
+              min="0.1"
+              step="0.1"
+              required
+            />
+          </mat-form-field>
 
-        <mat-form-field appearance="outline">
-          <mat-label>Unidade</mat-label>
-          <input
-            matInput
-            [value]="ingrediente.unidade"
-            (input)="atualizarIngrediente($index, 'unidade', $any($event.target).value)"
-          />
-        </mat-form-field>
+          <mat-form-field appearance="outline" class="ingrediente-unidade">
+            <mat-label>Unidade</mat-label>
+            <mat-select
+              [value]="ingrediente.unidade"
+              (selectionChange)="atualizarIngrediente($index, 'unidade', $event.value)"
+              required
+            >
+              <mat-option value="">
+                <span>Selecione</span>
+              </mat-option>
+              <mat-option value="g">Gramas (g)</mat-option>
+              <mat-option value="ml">Mililitros (ml)</mat-option>
+              <mat-option value="xícara">Xícara</mat-option>
+              <mat-option value="colher-de-sopa">Colher de Sopa</mat-option>
+              <mat-option value="colher-de-chá">Colher de Chá</mat-option>
+              <mat-option value="unidade">Unidade</mat-option>
+              <mat-option value="pitada">Pitada</mat-option>
+            </mat-select>
+          </mat-form-field>
 
-        <button mat-icon-button color="warn" type="button" (click)="removerIngrediente($index)">
-          ✕
+          <button
+            mat-icon-button
+            color="warn"
+            type="button"
+            (click)="removerIngrediente($index)"
+            title="Remover ingrediente"
+          >
+            <mat-icon>close</mat-icon>
+          </button>
+        </div>
+      }
+
+      <div class="btn-adicionar">
+        <button mat-raised-button color="accent" type="button" (click)="adicionarIngrediente()">
+          <mat-icon>add</mat-icon>
+          Adicionar Ingrediente
         </button>
       </div>
-    }
+    </div>
+  </div>
 
-    <button mat-raised-button color="primary" type="button">Adicionar ingrediente</button>
+  <!-- Botões de Ação -->
+  <div class="form-actions">
+    <button mat-raised-button color="primary" type="submit">
+      <mat-icon>save</mat-icon>
+      Salvar Receita
+    </button>
+    <button mat-stroked-button type="button">
+      <mat-icon>cancel</mat-icon>
+      Cancelar
+    </button>
   </div>
 </form>

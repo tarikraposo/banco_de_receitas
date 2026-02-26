@@ -1,4 +1,4 @@
-import { Component, effect, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { IngredienteForm, ReceitaInterface } from '../../../../core/models/receita-interface';
 import { form } from '@angular/forms/signals';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -9,6 +9,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { SupabaseClientService } from '../../../../core/supabase.client';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-receita-form',
@@ -19,6 +20,7 @@ import { SupabaseClientService } from '../../../../core/supabase.client';
     MatSelectModule,
     MatButtonModule,
     MatIconModule,
+    FormsModule,
   ],
   templateUrl: './receita-form.html',
   styleUrl: './receita-form.scss',
@@ -30,6 +32,7 @@ export class ReceitaForm implements OnInit {
     tempoPreparo: 0,
     porcoes: 1,
     imagem_url: '',
+    modo_preparo: '',
     tipoId: '',
     dificuldadeId: '',
     ingredientes: [],
@@ -47,16 +50,16 @@ export class ReceitaForm implements OnInit {
     { id: 'media', nome: 'Média' },
     { id: 'dificil', nome: 'Difícil' },
   ]);
-
+  supabaseService = inject(SupabaseClientService);
   receitaService = inject(ReceitasService);
   ingredientesDisponiveis = this.receitaService.ingredientesDisponiveis;
   receitaForm = form(this.receitaModel);
 
-  constructor() {
-    effect(() => {
-      console.log('Model atualizado:', this.receitaModel());
-    });
-  }
+  // constructor() {
+  //   effect(() => {
+  //     console.log('Model atualizado:', this.receitaModel());
+  //   });
+  // }
 
   ngOnInit(): void {
     this.receitaService.carregarIngredientes();
@@ -101,5 +104,48 @@ export class ReceitaForm implements OnInit {
   enviarFormulario() {
     console.log('Formulário enviado:', this.receitaModel());
     // Implementar envio para o serviço
+  }
+
+  async salvarReceita() {
+    try {
+      // 1️⃣ Separar ingredientes
+      const { ingredientes, ...dadosReceita } = this.receitaModel();
+
+      // 2️⃣ Inserir receita
+      const { data: receitaCriada, error: erroReceita } = await this.supabaseService.client
+        .from('receitas')
+        .insert({
+          nome: dadosReceita.nome,
+          descricao: dadosReceita.descricao,
+          tempo_preparo: dadosReceita.tempoPreparo,
+          modo_preparo: dadosReceita.modo_preparo,
+          porcoes: dadosReceita.porcoes,
+          tipo_id: dadosReceita.tipoId,
+          imagem_url: dadosReceita.imagem_url,
+        })
+        .select()
+        .single();
+
+      if (erroReceita) throw erroReceita;
+
+      // 3️⃣ Preparar ingredientes com receita_id
+      const ingredientesParaInserir = ingredientes.map((i) => ({
+        receita_id: receitaCriada.id,
+        ingrediente_id: i.ingredienteId,
+        quantidade: i.quantidade,
+        unidade: i.unidade,
+      }));
+
+      // 4️⃣ Inserir ingredientes
+      const { error: erroIngredientes } = await this.supabaseService.client
+        .from('receita_ingredientes')
+        .insert(ingredientesParaInserir);
+
+      if (erroIngredientes) throw erroIngredientes;
+
+      console.log('Receita salva com sucesso 🎉', receitaCriada);
+    } catch (error) {
+      console.error('Erro ao salvar receita ❌', error);
+    }
   }
 }

@@ -13,15 +13,20 @@ export class ReceitasService {
       .from('receitas')
       .select(
         `
-        *,
-        tipos(nome),
-        dificuldades(nome),
-        receita_ingredientes(
-          quantidade,
-          unidade,
-          ingredientes(nome)
-        )
-      `,
+      id,
+      nome,
+      descricao,
+      imagem_url,
+      tempo_preparo,
+      porcoes,
+      tipos(nome),
+      dificuldades(nome),
+      receita_ingredientes(
+        quantidade,
+        unidade,
+        ingredientes(nome)
+      )
+    `,
       )
       .order('created_at', { ascending: false });
 

@@ -4,22 +4,49 @@
   <p>Carregando receitas...</p>
 }
 
-@if (!loading() && receitas().length === 0) {
-  <p>Nenhuma receita cadastrada.</p>
-}
-
 <div class="receitas-grid">
+
   @for (receita of receitas(); track receita.id) {
-    <div class="receita-card">
-      <img [src]="receita.imagem_url" alt="{{ receita.nome }}" class="receita-img" />
 
-      <h2>{{ receita.nome }}</h2>
+    <mat-card class="receita-card">
 
-      <p>{{ receita.descricao }}</p>
+      <img
+        mat-card-image
+        [src]="receita.imagem_url || 'assets/placeholder.jpg'"
+        alt="{{ receita.nome }}"
+      />
 
-      <small> ⏱ {{ receita.tempo_preparo }} min | 🍽 {{ receita.porcoes }} porções </small>
+      <mat-card-header>
+        <mat-card-title>
+          {{ receita.nome }}
+        </mat-card-title>
 
-      <p>Tipo: {{ receita.tipos?.nome }} • Dificuldade: {{ receita.dificuldades?.nome }}</p>
-    </div>
+        <mat-card-subtitle>
+          {{ receita.tipos?.nome }} • {{ receita.dificuldades?.nome }}
+        </mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
+        <p>{{ receita.descricao }}</p>
+
+        <small>
+          ⏱ {{ receita.tempo_preparo }} min |
+          🍽 {{ receita.porcoes }} porções
+        </small>
+      </mat-card-content>
+
+      <mat-card-actions>
+        <button mat-button color="primary">
+          Ver
+        </button>
+
+        <button mat-button color="accent">
+          Editar
+        </button>
+      </mat-card-actions>
+
+    </mat-card>
+
   }
+
 </div>

@@ -1,19 +1,17 @@
 .receitas-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
 }
 
 .receita-card {
-  border: 1px solid #ddd;
-  border-radius: 12px;
-  padding: 16px;
-  background: white;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
-.receita-img {
-  width: 100%;
-  height: 180px;
-  object-fit: cover;
-  border-radius: 8px;
+.receita-card:hover {
+  // transform: translateY(-2px);
+  filter: brightness(95%);
 }

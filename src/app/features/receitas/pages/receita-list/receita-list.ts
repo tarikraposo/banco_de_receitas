@@ -1,9 +1,12 @@
 import { Component, inject, signal } from '@angular/core';
 import { ReceitasService } from '../../services/receitas.service';
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
+
 
 @Component({
   selector: 'app-receita-list',
-  imports: [],
+  imports: [MatCardModule, MatButtonModule],
   templateUrl: './receita-list.html',
   styleUrl: './receita-list.scss',
 })

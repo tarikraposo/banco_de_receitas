@@ -4,6 +4,7 @@ export interface ReceitaInterface {
   tempoPreparo: number;
   porcoes: number;
   imagem_url?: string;
+  modo_preparo: string;
   tipoId: string;
   dificuldadeId: string;
   ingredientes: IngredienteForm[];

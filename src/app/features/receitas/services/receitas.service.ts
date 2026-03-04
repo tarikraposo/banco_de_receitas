@@ -5,19 +5,33 @@ import { SupabaseClientService } from '../../../core/supabase.client';
   providedIn: 'root',
 })
 export class ReceitasService {
-  private supabaseService = inject(SupabaseClientService);
+  private supabaseService = inject(SupabaseClientService).client;
   ingredientesDisponiveis = signal<{ id: string; nome: string }[]>([]);
 
-  async listar() {
-    const { data, error } = await this.supabaseService.client.from('receitas').select('*');
+  async listarReceitasCompletas() {
+    const { data, error } = await this.supabaseService
+      .from('receitas')
+      .select(
+        `
+        *,
+        tipos(nome),
+        dificuldades(nome),
+        receita_ingredientes(
+          quantidade,
+          unidade,
+          ingredientes(nome)
+        )
+      `,
+      )
+      .order('created_at', { ascending: false });
 
     if (error) throw error;
 
     return data;
   }
-  
+
   async carregarIngredientes() {
-    const { data, error } = await this.supabaseService.client
+    const { data, error } = await this.supabaseService
       .from('ingredientes')
       .select('id, nome')
       .order('nome');
@@ -28,6 +42,27 @@ export class ReceitasService {
     }
 
     this.ingredientesDisponiveis.set(data ?? []);
-    console.log(data)
+  }
+
+  async buscarTipos() {
+    const { data, error } = await this.supabaseService
+      .from('tipos')
+      .select('id, nome')
+      .order('nome');
+
+    if (error) throw error;
+
+    return data;
+  }
+
+  async buscarDificuldades() {
+    const { data, error } = await this.supabaseService
+      .from('dificuldades')
+      .select('id, nome')
+      .order('nome');
+
+    if (error) throw error;
+
+    return data;
   }
 }

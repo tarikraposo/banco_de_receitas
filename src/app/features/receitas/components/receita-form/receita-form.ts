@@ -43,6 +43,7 @@ export class ReceitaForm implements OnInit {
   receitaForm = form(this.receitaModel);
   ingredientesDisponiveis = this.receitaService.ingredientesDisponiveis;
 
+  salvando = signal(false);
   tiposReceita = signal<{ id: string; nome: string }[]>([]);
   dificuldades = signal<{ id: string; nome: string }[]>([]);
 
@@ -103,6 +104,15 @@ export class ReceitaForm implements OnInit {
   }
 
   async salvarReceita() {
+    if (this.salvando()) return;
+
+    this.salvando.set(true);
+
+    try {
+      // insert supabase
+    } finally {
+      this.salvando.set(false);
+    }
     try {
       // 1️⃣ Separar ingredientes
       const { ingredientes, ...dadosReceita } = this.receitaModel();

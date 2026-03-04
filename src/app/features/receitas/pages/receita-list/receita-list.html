@@ -1,1 +1,52 @@
-<p>receita-list works!</p>
+<h1>Receitas</h1>
+
+@if (loading()) {
+  <p>Carregando receitas...</p>
+}
+
+<div class="receitas-grid">
+
+  @for (receita of receitas(); track receita.id) {
+
+    <mat-card class="receita-card">
+
+      <img
+        mat-card-image
+        [src]="receita.imagem_url || 'assets/placeholder.jpg'"
+        alt="{{ receita.nome }}"
+      />
+
+      <mat-card-header>
+        <mat-card-title>
+          {{ receita.nome }}
+        </mat-card-title>
+
+        <mat-card-subtitle>
+          {{ receita.tipos?.nome }} • {{ receita.dificuldades?.nome }}
+        </mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
+        <p>{{ receita.descricao }}</p>
+
+        <small>
+          ⏱ {{ receita.tempo_preparo }} min |
+          🍽 {{ receita.porcoes }} porções
+        </small>
+      </mat-card-content>
+
+      <mat-card-actions>
+        <button mat-button color="primary">
+          Ver
+        </button>
+
+        <button mat-button color="accent">
+          Editar
+        </button>
+      </mat-card-actions>
+
+    </mat-card>
+
+  }
+
+</div>

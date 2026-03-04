@@ -13,15 +13,16 @@ export class ReceitasService {
       .from('receitas')
       .select(
         `
-        *,
-        tipos(nome),
-        dificuldades(nome),
-        receita_ingredientes(
-          quantidade,
-          unidade,
-          ingredientes(nome)
-        )
-      `,
+      *,
+      tipos!receitas_tipo_id_fkey (
+        id,
+        nome
+      ),
+      dificuldades!fk_dificuldade (
+        id,
+        nome
+      )
+    `,
       )
       .order('created_at', { ascending: false });
 

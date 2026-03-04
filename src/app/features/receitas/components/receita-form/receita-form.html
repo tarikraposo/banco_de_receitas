@@ -87,11 +87,7 @@
         <mat-select
           [value]="receitaModel().tipoId"
           (selectionChange)="atualizarCampo('tipoId', $event.value)"
-          required
         >
-          <mat-option value="">
-            <span>Selecione um tipo</span>
-          </mat-option>
           @for (tipo of tiposReceita(); track tipo.id) {
             <mat-option [value]="tipo.id">
               {{ tipo.nome }}

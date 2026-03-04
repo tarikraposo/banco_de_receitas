@@ -15,7 +15,7 @@ export class ReceitasService {
 
     return data;
   }
-  
+
   async carregarIngredientes() {
     const { data, error } = await this.supabaseService.client
       .from('ingredientes')
@@ -28,5 +28,27 @@ export class ReceitasService {
     }
 
     this.ingredientesDisponiveis.set(data ?? []);
+  }
+
+  async buscarTipos() {
+    const { data, error } = await this.supabaseService.client
+      .from('tipos')
+      .select('id, nome')
+      .order('nome');
+
+    if (error) throw error;
+
+    return data;
+  }
+
+  async buscarDificuldades() {
+    const { data, error } = await this.supabaseService.client
+      .from('dificuldades')
+      .select('id, nome')
+      .order('nome');
+
+    if (error) throw error;
+
+    return data;
   }
 }

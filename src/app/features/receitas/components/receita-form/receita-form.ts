@@ -38,22 +38,13 @@ export class ReceitaForm implements OnInit {
     ingredientes: [],
   });
 
-  tiposReceita = signal<{ id: string; nome: string }[]>([
-    { id: 'sobremesa', nome: 'Sobremesa' },
-    { id: 'prato-principal', nome: 'Prato Principal' },
-    { id: 'entrada', nome: 'Entrada' },
-    { id: 'bebida', nome: 'Bebida' },
-  ]);
-
-  dificuldades = signal<{ id: string; nome: string }[]>([
-    { id: 'facil', nome: 'Fácil' },
-    { id: 'media', nome: 'Média' },
-    { id: 'dificil', nome: 'Difícil' },
-  ]);
   supabaseService = inject(SupabaseClientService);
   receitaService = inject(ReceitasService);
-  ingredientesDisponiveis = this.receitaService.ingredientesDisponiveis;
   receitaForm = form(this.receitaModel);
+  ingredientesDisponiveis = this.receitaService.ingredientesDisponiveis;
+
+  tiposReceita = signal<{ id: string; nome: string }[]>([]);
+  dificuldades = signal<{ id: string; nome: string }[]>([]);
 
   // constructor() {
   //   effect(() => {
@@ -63,6 +54,7 @@ export class ReceitaForm implements OnInit {
 
   ngOnInit(): void {
     this.receitaService.carregarIngredientes();
+    this.carregarOpcoes();
   }
 
   atualizarCampo(campo: keyof ReceitaInterface, valor: any) {
@@ -86,7 +78,11 @@ export class ReceitaForm implements OnInit {
       };
     });
   }
+  async carregarOpcoes() {
+    this.tiposReceita.set(await this.receitaService.buscarTipos());
 
+    this.dificuldades.set(await this.receitaService.buscarDificuldades());
+  }
   adicionarIngrediente() {
     this.receitaModel.update((model) => ({
       ...model,

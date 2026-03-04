@@ -13,18 +13,14 @@ export class ReceitasService {
       .from('receitas')
       .select(
         `
-      id,
-      nome,
-      descricao,
-      imagem_url,
-      tempo_preparo,
-      porcoes,
-      tipos(nome),
-      dificuldades(nome),
-      receita_ingredientes(
-        quantidade,
-        unidade,
-        ingredientes(nome)
+      *,
+      tipos!receitas_tipo_id_fkey (
+        id,
+        nome
+      ),
+      dificuldades!fk_dificuldade (
+        id,
+        nome
       )
     `,
       )

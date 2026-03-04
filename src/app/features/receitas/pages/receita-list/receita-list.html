@@ -1,1 +1,25 @@
-<p>receita-list works!</p>
+<h1>Receitas</h1>
+
+@if (loading()) {
+  <p>Carregando receitas...</p>
+}
+
+@if (!loading() && receitas().length === 0) {
+  <p>Nenhuma receita cadastrada.</p>
+}
+
+<div class="receitas-grid">
+  @for (receita of receitas(); track receita.id) {
+    <div class="receita-card">
+      <img [src]="receita.imagem_url" alt="{{ receita.nome }}" class="receita-img" />
+
+      <h2>{{ receita.nome }}</h2>
+
+      <p>{{ receita.descricao }}</p>
+
+      <small> ⏱ {{ receita.tempo_preparo }} min | 🍽 {{ receita.porcoes }} porções </small>
+
+      <p>Tipo: {{ receita.tipos?.nome }} • Dificuldade: {{ receita.dificuldades?.nome }}</p>
+    </div>
+  }
+</div>

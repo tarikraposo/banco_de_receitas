@@ -201,7 +201,7 @@
 
   <!-- Botões de Ação -->
   <div class="form-actions">
-    <button mat-raised-button color="primary" type="button">
+    <button mat-raised-button color="primary" type="submit" [disabled]="salvando()">
       <mat-icon>save</mat-icon>
       Salvar Receita
     </button>

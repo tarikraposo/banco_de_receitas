@@ -3,11 +3,12 @@ import { ReceitasService } from '../../services/receitas.service';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { ReceitaCard } from '../../components/receita-card/receita-card';
-import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatFormField, MatFormFieldControl, MatLabel } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ReceitaInterface } from '../../../../core/models/receita-interface';
 import { SupabaseClientService } from '../../../../core/supabase.client';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-receita-list',
@@ -19,12 +20,12 @@ import { SupabaseClientService } from '../../../../core/supabase.client';
     MatFormField,
     MatLabel,
     MatProgressSpinnerModule,
+    MatInputModule,
   ],
   templateUrl: './receita-list.html',
   styleUrl: './receita-list.scss',
 })
 export class ReceitaList {
-  private receitasService = inject(ReceitasService);
   supabase = inject(SupabaseClientService).client;
 
   receitas = signal<ReceitaInterface[]>([]);

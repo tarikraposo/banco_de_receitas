@@ -15,9 +15,8 @@
 <!-- GRID -->
 @if (!loading) {
   <div class="grid">
-    <app-receita-card
-      *ngFor="let receita of receitasFiltradas()"
-      [receita]="receita"
-    ></app-receita-card>
+    @for (item of receitasFiltradas(); track $index) {
+      <app-receita-card [receita]="item"></app-receita-card>
+    }
   </div>
 }

@@ -7,13 +7,13 @@
 </mat-form-field>
 
 <!-- LOADING -->
-@if (loading) {
+@if (loading()) {
   <div class="loading">
     <mat-spinner></mat-spinner>
   </div>
 }
 <!-- GRID -->
-@if (!loading) {
+@if (!loading()) {
   <div class="grid">
     @for (item of receitasFiltradas(); track $index) {
       <app-receita-card [receita]="item"></app-receita-card>

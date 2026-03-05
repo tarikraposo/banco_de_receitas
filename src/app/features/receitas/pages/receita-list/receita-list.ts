@@ -30,7 +30,7 @@ export class ReceitaList {
 
   receitas = signal<ReceitaInterface[]>([]);
   filtro = signal('');
-  loading = true;
+  loading = signal(true);
   receitasFiltradas = computed(() => {
     const termo = this.filtro().toLowerCase();
 
@@ -42,7 +42,7 @@ export class ReceitaList {
   }
 
   async carregarReceitas() {
-    this.loading = true;
+    this.loading.set(true);
 
     const { data, error } = await this.supabase.from('receitas').select(`
       *,
@@ -55,6 +55,6 @@ export class ReceitaList {
       this.receitas.set(data ?? []);
     }
 
-    this.loading = false;
+    this.loading.set(false);
   }
 }

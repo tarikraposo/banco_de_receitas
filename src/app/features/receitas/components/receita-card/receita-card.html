@@ -1,17 +1,21 @@
 <mat-card>
-
+    <img
+        mat-card-image
+        [src]="receitaValue().imagem_url || 'assets/placeholder.jpg'"
+        alt="{{ receitaValue().nome }}"
+      />
   <mat-card-header>
     <mat-card-title>
-      {{ receitaValue()?.nome }}
+      {{ receitaValue().nome }}
     </mat-card-title>
 
     <mat-card-subtitle>
-      {{ receitaValue()?.tipos?.nome }}
+      {{ receitaValue().tipos?.nome }}
     </mat-card-subtitle>
   </mat-card-header>
 
   <mat-card-content>
-    {{ receitaValue()?.descricao }}
+    {{ receitaValue().descricao }}
   </mat-card-content>
 
 </mat-card>

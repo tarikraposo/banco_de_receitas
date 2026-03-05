@@ -107,55 +107,24 @@ export class ReceitaForm implements OnInit {
     // Implementar envio para o serviço
   }
 
-  async salvarReceita() {
-    if (this.salvando()) return;
-
+  async salvarReceita(event: Event) {
+    event.preventDefault();
     this.salvando.set(true);
+    const receita = this.receitaModel();
 
-    try {
-      // insert supabase
-    } finally {
-      this.salvando.set(false);
-    }
-    try {
-      // 1️⃣ Separar ingredientes
-      const { ingredientes, ...dadosReceita } = this.receitaModel();
+    const { ingredientes, ...dadosReceita } = receita;
 
-      // 2️⃣ Inserir receita
-      const { data: receitaCriada, error: erroReceita } = await this.supabaseService.client
-        .from('receitas')
-        .insert({
-          nome: dadosReceita.nome,
-          descricao: dadosReceita.descricao,
-          tempo_preparo: dadosReceita.tempo_preparo,
-          modo_preparo: dadosReceita.modo_preparo,
-          porcoes: dadosReceita.porcoes,
-          tipo_id: dadosReceita.tipo_id,
-          imagem_url: dadosReceita.imagem_url,
-        })
-        .select()
-        .single();
+    const { data, error } = await this.supabaseService.client
+      .from('receitas')
+      .insert(dadosReceita)
+      .select()
+      .single();
 
-      if (erroReceita) throw erroReceita;
+    if (error) throw error;
+    this.salvando.set(false);
 
-      // 3️⃣ Preparar ingredientes com receita_id
-      const ingredientesParaInserir = ingredientes.map((i) => ({
-        receita_id: receitaCriada.id,
-        ingrediente_id: i.ingrediente_id,
-        quantidade: i.quantidade,
-        unidade: i.unidade,
-      }));
+    // salvar ingredientes depois...
 
-      // 4️⃣ Inserir ingredientes
-      const { error: erroIngredientes } = await this.supabaseService.client
-        .from('receita_ingredientes')
-        .insert(ingredientesParaInserir);
-
-      if (erroIngredientes) throw erroIngredientes;
-
-      console.log('Receita salva com sucesso 🎉', receitaCriada);
-    } catch (error) {
-      console.error('Erro ao salvar receita ❌', error);
-    }
   }
+
 }

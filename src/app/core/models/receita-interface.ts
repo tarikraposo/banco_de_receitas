@@ -1,17 +1,45 @@
 export interface ReceitaInterface {
+  // ===== colunas da tabela receitas =====
+  id: string;
   nome: string;
   descricao: string;
-  tempoPreparo: number;
+  tempo_preparo: number;
   porcoes: number;
   imagem_url?: string;
   modo_preparo: string;
-  tipoId: string;
-  dificuldadeId: string;
+
+  tipo_id: string;
+  dificuldade_id: string;
+
+  // ===== relacionamento (JOIN) =====
+  tipos?: {
+    id: number;
+    nome: string;
+  };
+
+  dificuldades?: {
+    id: number;
+    nome: string;
+  };
+
+  // ===== usado só no frontend =====
+  ingredientes?: IngredienteForm[];
+}
+
+export interface ReceitaFormModel {
+  nome: string;
+  descricao: string;
+  tempo_preparo: number;
+  porcoes: number;
+  imagem_url?: string;
+  modo_preparo: string;
+  tipo_id: string;
+  dificuldade_id: string;
   ingredientes: IngredienteForm[];
 }
 
 export interface IngredienteForm {
-  ingredienteId: string;
+  ingrediente_id: string;
   quantidade: number;
   unidade: string;
 }

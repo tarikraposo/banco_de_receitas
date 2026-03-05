@@ -1,4 +1,4 @@
-<form (ngSubmit)="salvarReceita()" class="receita-form">
+<form (ngSubmit)="salvarReceita($event)" class="receita-form">
   <div class="form-header">
     <h2>Cadastrar Nova Receita</h2>
   </div>
@@ -45,8 +45,8 @@
         <input
           matInput
           type="number"
-          [value]="receitaModel().tempoPreparo"
-          (input)="atualizarCampo('tempoPreparo', +$any($event.target).value)"
+          [value]="receitaModel().tempo_preparo"
+          (input)="atualizarCampo('tempo_preparo', +$any($event.target).value)"
           min="1"
           required
         />
@@ -85,8 +85,8 @@
       <mat-form-field appearance="outline" class="form-field-50">
         <mat-label>Tipo de Receita</mat-label>
         <mat-select
-          [value]="receitaModel().tipoId"
-          (selectionChange)="atualizarCampo('tipoId', $event.value)"
+          [value]="receitaModel().tipo_id"
+          (selectionChange)="atualizarCampo('tipo_id', $event.value)"
         >
           @for (tipo of tiposReceita(); track tipo.id) {
             <mat-option [value]="tipo.id">
@@ -100,8 +100,8 @@
       <mat-form-field appearance="outline" class="form-field-50">
         <mat-label>Dificuldade</mat-label>
         <mat-select
-          [value]="receitaModel().dificuldadeId"
-          (selectionChange)="atualizarCampo('dificuldadeId', $event.value)"
+          [value]="receitaModel().dificuldade_id"
+          (selectionChange)="atualizarCampo('dificuldade_id', $event.value)"
           required
         >
           <mat-option value="">
@@ -130,8 +130,8 @@
           <mat-form-field appearance="outline" class="ingrediente-select">
             <mat-label>Ingrediente</mat-label>
             <mat-select
-              [value]="ingrediente.ingredienteId"
-              (selectionChange)="atualizarIngrediente($index, 'ingredienteId', $event.value)"
+              [value]="ingrediente.ingrediente_id"
+              (selectionChange)="atualizarIngrediente($index, 'ingrediente_id', $event.value)"
               required
             >
               <mat-option value="">

@@ -1,5 +1,9 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { IngredienteForm, ReceitaInterface } from '../../../../core/models/receita-interface';
+import {
+  IngredienteForm,
+  ReceitaFormModel,
+  ReceitaInterface,
+} from '../../../../core/models/receita-interface';
 import { form } from '@angular/forms/signals';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -26,15 +30,15 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './receita-form.scss',
 })
 export class ReceitaForm implements OnInit {
-  receitaModel = signal<ReceitaInterface>({
+  receitaModel = signal<ReceitaFormModel>({
     nome: '',
     descricao: '',
-    tempoPreparo: 0,
+    tempo_preparo: 0,
     porcoes: 1,
     imagem_url: '',
     modo_preparo: '',
-    tipoId: '',
-    dificuldadeId: '',
+    tipo_id: '',
+    dificuldade_id: '',
     ingredientes: [],
   });
 
@@ -87,7 +91,7 @@ export class ReceitaForm implements OnInit {
   adicionarIngrediente() {
     this.receitaModel.update((model) => ({
       ...model,
-      ingredientes: [...model.ingredientes, { ingredienteId: '', quantidade: 1, unidade: '' }],
+      ingredientes: [...model.ingredientes, { ingrediente_id: '', quantidade: 1, unidade: '' }],
     }));
   }
 
@@ -103,55 +107,44 @@ export class ReceitaForm implements OnInit {
     // Implementar envio para o serviço
   }
 
-  async salvarReceita() {
-    if (this.salvando()) return;
-
+  async salvarReceita(event: Event) {
+    event.preventDefault();
     this.salvando.set(true);
 
     try {
-      // insert supabase
-    } finally {
-      this.salvando.set(false);
-    }
-    try {
-      // 1️⃣ Separar ingredientes
-      const { ingredientes, ...dadosReceita } = this.receitaModel();
+      const receita = this.receitaModel();
+      const { ingredientes, ...dadosReceita } = receita;
 
-      // 2️⃣ Inserir receita
-      const { data: receitaCriada, error: erroReceita } = await this.supabaseService.client
+      // 1️⃣ salva receita
+      const { data, error } = await this.supabaseService.client
         .from('receitas')
-        .insert({
-          nome: dadosReceita.nome,
-          descricao: dadosReceita.descricao,
-          tempo_preparo: dadosReceita.tempoPreparo,
-          modo_preparo: dadosReceita.modo_preparo,
-          porcoes: dadosReceita.porcoes,
-          tipo_id: dadosReceita.tipoId,
-          imagem_url: dadosReceita.imagem_url,
-        })
+        .insert(dadosReceita)
         .select()
         .single();
 
-      if (erroReceita) throw erroReceita;
+      if (error) throw error;
 
-      // 3️⃣ Preparar ingredientes com receita_id
-      const ingredientesParaInserir = ingredientes.map((i) => ({
-        receita_id: receitaCriada.id,
-        ingrediente_id: i.ingredienteId,
-        quantidade: i.quantidade,
-        unidade: i.unidade,
-      }));
+      // 2️⃣ salva ingredientes
+      if (ingredientes.length > 0) {
+        const ingredientesPayload = ingredientes.map((i) => ({
+          receita_id: data.id,
+          ingrediente_id: i.ingrediente_id,
+          quantidade: i.quantidade,
+          unidade: i.unidade,
+        }));
 
-      // 4️⃣ Inserir ingredientes
-      const { error: erroIngredientes } = await this.supabaseService.client
-        .from('receita_ingredientes')
-        .insert(ingredientesParaInserir);
+        const { error: erroIngredientes } = await this.supabaseService.client
+          .from('receita_ingredientes')
+          .insert(ingredientesPayload);
 
-      if (erroIngredientes) throw erroIngredientes;
+        if (erroIngredientes) throw erroIngredientes;
+      }
 
-      console.log('Receita salva com sucesso 🎉', receitaCriada);
-    } catch (error) {
-      console.error('Erro ao salvar receita ❌', error);
+      console.log('Receita salva com sucesso ✅');
+    } catch (err) {
+      console.error('Erro ao salvar receita', err);
+    } finally {
+      this.salvando.set(false);
     }
   }
 }

@@ -110,21 +110,41 @@ export class ReceitaForm implements OnInit {
   async salvarReceita(event: Event) {
     event.preventDefault();
     this.salvando.set(true);
-    const receita = this.receitaModel();
 
-    const { ingredientes, ...dadosReceita } = receita;
+    try {
+      const receita = this.receitaModel();
+      const { ingredientes, ...dadosReceita } = receita;
 
-    const { data, error } = await this.supabaseService.client
-      .from('receitas')
-      .insert(dadosReceita)
-      .select()
-      .single();
+      // 1️⃣ salva receita
+      const { data, error } = await this.supabaseService.client
+        .from('receitas')
+        .insert(dadosReceita)
+        .select()
+        .single();
 
-    if (error) throw error;
-    this.salvando.set(false);
+      if (error) throw error;
 
-    // salvar ingredientes depois...
+      // 2️⃣ salva ingredientes
+      if (ingredientes.length > 0) {
+        const ingredientesPayload = ingredientes.map((i) => ({
+          receita_id: data.id,
+          ingrediente_id: i.ingrediente_id,
+          quantidade: i.quantidade,
+          unidade: i.unidade,
+        }));
 
+        const { error: erroIngredientes } = await this.supabaseService.client
+          .from('receita_ingredientes')
+          .insert(ingredientesPayload);
+
+        if (erroIngredientes) throw erroIngredientes;
+      }
+
+      console.log('Receita salva com sucesso ✅');
+    } catch (err) {
+      console.error('Erro ao salvar receita', err);
+    } finally {
+      this.salvando.set(false);
+    }
   }
-
 }

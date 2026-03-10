@@ -1,5 +1,4 @@
 import { Component, computed, inject, signal } from '@angular/core';
-import { ReceitasService } from '../../services/receitas.service';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { ReceitaCard } from '../../components/receita-card/receita-card';
@@ -9,6 +8,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ReceitaInterface } from '../../../../core/models/receita-interface';
 import { SupabaseClientService } from '../../../../core/supabase.client';
 import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-receita-list',
@@ -21,6 +21,7 @@ import { MatInputModule } from '@angular/material/input';
     MatLabel,
     MatProgressSpinnerModule,
     MatInputModule,
+    MatIconModule
   ],
   templateUrl: './receita-list.html',
   styleUrl: './receita-list.scss',

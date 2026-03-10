@@ -1,19 +1,19 @@
-import { Component, inject, signal, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
+import { MatCardModule } from '@angular/material/card';
+import { ReceitaCard } from '../../components/receita-card/receita-card';
+import { ReceitaInterface } from '../../../../core/models/receita-interface';
 import { ActivatedRoute } from '@angular/router';
 import { SupabaseClientService } from '../../../../core/supabase.client';
-import { ReceitaInterface } from '../../../../core/models/receita-interface';
-import {
-
-  MatCardModule,
-} from '@angular/material/card';
+import { ReceitaDetalheComponent } from "./receita-detalhe-component/receita-detalhe-component";
 
 @Component({
   selector: 'app-receita-detalhe',
   standalone: true,
   templateUrl: './receita-detalhe.html',
-  imports: [MatCardModule],
+  styleUrl: './receita-detalhe.scss',
+  imports: [MatCardModule, ReceitaDetalheComponent],
 })
-export class ReceitaDetalheComponent implements OnInit {
+export class ReceitaDetalhePage {
   private route = inject(ActivatedRoute);
   private supabase = inject(SupabaseClientService).client;
 

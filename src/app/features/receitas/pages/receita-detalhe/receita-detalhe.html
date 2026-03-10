@@ -1,47 +1,8 @@
 @if (loading()) {
-  <p>Carregando receita...</p>
+  <p>Carregando...</p>
 } @else {
-  @if (receita(); as r) {
-    <mat-card>
-      @if (!r.imagem_url) {
-        <mat-icon mat-card-image>image</mat-icon>
-      }
-
-      <mat-card-title>
-        {{ r.nome }}
-      </mat-card-title>
-
-      <mat-card-subtitle>
-        {{ r.tipos?.nome }} • {{ r.dificuldades?.nome }} •
-
-        {{ r.tempo_preparo }} min • {{ r.porcoes }} porções
-      </mat-card-subtitle>
-
-      <mat-card-content>
-        <p>{{ r.descricao }}</p>
-
-        <h3>Ingredientes</h3>
-
-        <ul>
-          @for (ing of r.receita_ingredientes; track $index) {
-            <li>
-              @if (ing.quantidade) {
-                {{ ing.quantidade }}
-              }
-
-              @if (ing.unidade) {
-                {{ ing.unidade }}
-              }
-
-              {{ ing.ingredientes.nome }}
-            </li>
-          }
-        </ul>
-
-        <h3>Modo de preparo</h3>
-
-        <p>{{ r.modo_preparo }}</p>
-      </mat-card-content>
-    </mat-card>
-  }
+  <div class="receita-detalhe-container">
+    <app-receita-detalhe-component [receita]="receita()" [loading]="loading()">
+    </app-receita-detalhe-component>
+  </div>
 }

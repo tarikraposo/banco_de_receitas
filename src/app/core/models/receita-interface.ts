@@ -24,6 +24,7 @@ export interface ReceitaInterface {
 
   // ===== usado só no frontend =====
   ingredientes?: IngredienteForm[];
+  receita_ingredientes?: ReceitaIngredienteDetalhe[];
 }
 
 export interface ReceitaFormModel {
@@ -42,4 +43,11 @@ export interface IngredienteForm {
   ingrediente_id: string;
   quantidade: number;
   unidade: string;
+}
+export interface ReceitaIngredienteDetalhe {
+  quantidade: number | null;
+  unidade: string | null;
+  ingredientes: {
+    nome: string;
+  };
 }

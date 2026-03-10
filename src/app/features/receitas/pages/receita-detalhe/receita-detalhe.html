@@ -1,0 +1,8 @@
+@if (loading()) {
+  <p>Carregando...</p>
+} @else {
+  <div class="receita-detalhe-container">
+    <app-receita-detalhe-component [receita]="receita()" [loading]="loading()">
+    </app-receita-detalhe-component>
+  </div>
+}

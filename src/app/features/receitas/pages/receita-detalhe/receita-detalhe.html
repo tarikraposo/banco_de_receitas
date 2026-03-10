@@ -3,7 +3,9 @@
 } @else {
   @if (receita(); as r) {
     <mat-card>
-      <img *ngIf="r.imagem_url" mat-card-image [src]="r.imagem_url" />
+      @if (!r.imagem_url) {
+        <mat-icon mat-card-image>image</mat-icon>
+      }
 
       <mat-card-title>
         {{ r.nome }}

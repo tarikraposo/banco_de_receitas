@@ -69,7 +69,11 @@ export class ReceitaForm implements OnInit {
     }));
   }
 
-  atualizarIngrediente(index: number, campo: keyof IngredienteForm, valor: any) {
+  atualizarIngrediente<K extends keyof IngredienteForm>(
+    index: number,
+    campo: K,
+    valor: IngredienteForm[K],
+  ) {
     this.receitaModel.update((model) => {
       const ingredientesAtualizados = [...model.ingredientes];
       ingredientesAtualizados[index] = {

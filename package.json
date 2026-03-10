@@ -2,11 +2,11 @@
   "name": "receitas",
   "version": "0.0.0",
   "scripts": {
-    "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "build:prod": "ng build --configuration production --base-href=/banco_de_receitas/",
+    "deploy": "ng deploy --base-href=/banco_de_receitas/ --dir=dist/receitas/browser",
+    "deploy:prod": "npm run build:prod && ng deploy --dir=dist/receitas"
   },
   "prettier": {
     "printWidth": 100,

@@ -1,0 +1,1 @@
+import{Rb as n,cb as i,wb as a,xb as c}from"./chunk-W3CETFKT.js";var o=class t{static \u0275fac=function(e){return new(e||t)};static \u0275cmp=i({type:t,selectors:[["app-receita-edit"]],decls:2,vars:0,template:function(e,r){e&1&&(a(0,"p"),n(1,"receita-edit works!"),c())},encapsulation:2})};export{o as ReceitaEdit};

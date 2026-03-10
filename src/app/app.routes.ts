@@ -34,7 +34,7 @@ export const routes: Routes = [
         path: ':id',
         loadComponent: () =>
           import('./features/receitas/pages/receita-detalhe/receita-detalhe').then(
-            (m) => m.ReceitaDetalheComponent,
+            (m) => m.ReceitaDetalhePage,
           ),
       },
     ],

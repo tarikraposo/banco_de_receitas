@@ -1,0 +1,126 @@
+.home-container {
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+
+  .hero {
+    text-align: center;
+    background-color: #fff8f2; // Versão bem clarinha do header (#ffc290)
+    padding: 80px 40px;
+    border-radius: 24px;
+    box-shadow: 0 4px 12px rgba(255, 194, 144, 0.2);
+    border: 1px solid rgba(255, 194, 144, 0.3);
+
+    .hero-content {
+      max-width: 800px;
+      margin: 0 auto;
+
+      h1 {
+        font-size: 3.5rem;
+        font-weight: 700;
+        color: #333;
+        margin-bottom: 24px;
+        line-height: 1.2;
+      }
+
+      p {
+        font-size: 1.4rem;
+        color: #666;
+        margin-bottom: 40px;
+        line-height: 1.6;
+      }
+
+      .actions {
+        display: flex;
+        gap: 16px;
+        justify-content: center;
+
+        button {
+          padding: 24px 32px;
+          font-size: 1.1rem;
+          border-radius: 12px;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+
+          &[color="primary"] {
+            background-color: #ffc290; // Cor do header
+            color: #442c2e; // Texto mais escuro para contraste
+          }
+
+          &.mat-mdc-outlined-button {
+            border-color: #ffc290;
+            color: #442c2e;
+          }
+        }
+      }
+    }
+  }
+
+  .features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 32px;
+
+    .feature-card {
+      background: white;
+      padding: 40px;
+      border-radius: 20px;
+      text-align: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      border: 1px solid #eee;
+
+      &:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.05);
+      }
+
+      .feature-icon {
+        font-size: 48px;
+        width: 48px;
+        height: 48px;
+        color: #ffc290;
+        margin-bottom: 24px;
+      }
+
+      h3 {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 16px;
+        color: #333;
+      }
+
+      p {
+        color: #666;
+        line-height: 1.6;
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    padding: 20px;
+    gap: 32px;
+
+    .hero {
+      padding: 40px 20px;
+
+      h1 {
+        font-size: 2.5rem;
+      }
+
+      p {
+        font-size: 1.1rem;
+      }
+
+      .actions {
+        flex-direction: column;
+        button {
+          width: 100%;
+        }
+      }
+    }
+  }
+}

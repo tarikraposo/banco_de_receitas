@@ -6,7 +6,7 @@
     "build": "ng build",
     "build:prod": "ng build --base-href=/receitas/ && copy dist\\receitas\\browser\\index.html dist\\receitas\\browser\\404.html",
     "deploy": "npx angular-cli-ghpages --dir=dist/receitas/browser",
-    "deploy:prod": "npm run build:prod && ng deploy --dir=dist/receitas/browser"
+    "deploy:prod": "npm run build:prod && npx angular-cli-ghpages --dir=dist/receitas/browser"
   },
   "prettier": {
     "printWidth": 100,

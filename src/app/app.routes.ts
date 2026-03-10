@@ -30,6 +30,13 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./features/receitas/pages/receita-edit/receita-edit').then((m) => m.ReceitaEdit),
       },
+      {
+        path: ':id',
+        loadComponent: () =>
+          import('./features/receitas/pages/receita-detalhe/receita-detalhe').then(
+            (m) => m.ReceitaDetalheComponent,
+          ),
+      },
     ],
   },
 ];
